@@ -13,13 +13,14 @@
             "mass":3.011e23,
             "radius":2439.7,
             "period":58.696,
-            "tilt":2.04
+            "tilt":2.04,
+            "color":"gray"
         }
     },
     "venus":{
         "orbit":{
             "eccentricity":0.006772,
-            "semimajor":108208000,
+            "semimajor":108.208e6,
             "inclination":3.39458,
             "long":76.680,
             "parent":"",
@@ -30,13 +31,14 @@
             "mass":4.8675e24,
             "radius":6051.8,
             "period":243.025,
-            "tilt":2.64
+            "tilt":2.64,
+            "color":"peachpuff"
         }
     },
     "earth":{
         "orbit":{
-            "eccentricity":0.5167086,
-            "semimajor":149.60e6,
+            "eccentricity":0.0167086,
+            "semimajor":149.6e6,
             "inclination":0.00005,
             "long":11.26064,
             "parent":"",
@@ -47,7 +49,8 @@
             "mass":5.97e24,
             "radius":6371.0,
             "period":0.99726968,
-            "tilt":23.439
+            "tilt":23.439,
+            "color":"seagreen"
         }
     },
     "luna":{
@@ -64,7 +67,8 @@
             "mass":7.342e22,
             "radius":1734.4,
             "period":27.321661,
-            "tilt":1.5424
+            "tilt":1.5424,
+            "color":"lightgrey"
         }
     }
 
