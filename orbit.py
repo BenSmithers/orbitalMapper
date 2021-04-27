@@ -1,6 +1,8 @@
 from MultiHex.clock import Time, minutes_in_day
 from MultiHex.core import Point3d as Point
 
+from cascade.utils import get_closest
+
 from scipy.optimize import root
 from math import sqrt, sin, cos,tan, pi, atan2, atan
 import numpy as np
@@ -45,16 +47,35 @@ class Orbit:
         self._mean_motion =(2*pi/self._period) # radians
 
         self._cached_E = None
-        self._cached_theta = None
+
+        self._configured = False
+        self._precalculate_orbit()
+
 
     def _eccentric(self, mean, E):
         return mean - E + self._e*sin(E) 
+    
+    def _precalculate_orbit(self):
+        n_points = 300
+        self._times = [ t for t in np.linspace(0, self._period*(1+1./n_points), 300)]
+        self._points = [ self._get_pos(t) for t in self._times ]
+        self._configured = True
 
     def get_pos(self, time):
+        time = float(time)/minutes_in_day
+
+        while time>self._period:
+            time -= self._period
+        if not self._configured:
+            self._precalculate_orbit()
+
+        return get_closest(time, self._times, self._points)
+
+    def _get_pos(self, time):
         if not isinstance(time, (Time, int, float)):
             raise TypeError("Needed {}, got {}".format(Time, type(time)))
 
-        t = float(time) #/minutes_in_day  # orbits are done in days, not minutesi
+        t = float(time)/minutes_in_day  # orbits are done in days, not minutesi
         while t>self._period:
             t -= self._period
 
@@ -88,5 +109,5 @@ class Orbit:
         if self._parent != "":
             point += self._planet_list[self._parent].get_pos(time)
 
-        return tuple(point) #x,y,z
+        return point #x,y,z
         
