@@ -10,14 +10,15 @@ class Body(Orbit):
         self._mass = json_entry["mass"]
         self._radius = json_entry["radius"]
         self._rot_period = json_entry["period"]
-        self._tile = json_entry["tilt"]
+        self._tilt = json_entry["tilt"]
         self._color = json_entry["color"]
+
     @property
     def color(self):
         return self._color
 
     @property
     def ms(self):
-        value = 10*pow(2,log10(self._mass/(5.97e24))) 
+        value = 5*pow(2,log10(self._mass/(5.97e24))) 
 
         return value
