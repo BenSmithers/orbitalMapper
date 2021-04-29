@@ -9,13 +9,15 @@ import matplotlib.pyplot as plt
 
 import sys
 import numpy as np
-from math import pi, cos, sin
+from math import pi, cos, sin, sqrt
 
 from body import Bodies
 from projection import proj_angles
 
 from MultiHex.clock import Time
 from trajectory import calculate_traj
+
+import time
 
 class main_window(QMainWindow):
     """
@@ -72,12 +74,19 @@ class main_window(QMainWindow):
         self.ui.ax.set_ylim([-self.scale,self.scale])
         
         print("integrate!")
+        start = time.time()
         p_earth = self._bodies["earth"].get_pos(self.time)
-        v_earth = -0.5*self._bodies["earth"].approx_v(self.time)
-        times = np.linspace(0 , 50, 100)*24*60 #100 days now 
+        v_earth = self._bodies["earth"].approx_v(self.time)
 
-        traj = calculate_traj(times, p_earth,v_earth)
-        
+        a_vec = self._bodies["mercury"].get_pos(self.time)-p_earth
+        a_vec /= sqrt(np.dot(a_vec,a_vec))
+
+
+        times = np.linspace(0 , 50, 30)*24*60 #100 days now 
+
+        traj = calculate_traj(times, p_earth,v_earth, a_vec*0.001) 
+        end = time.time()
+        print("Took {} seconds".format(end-start))
 
         traj = np.transpose(traj)
         self.ui.ax.plot(traj[0], traj[1], color="white", ls='--')
