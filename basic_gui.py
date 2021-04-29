@@ -1,5 +1,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
-
+from matplotlib.backends.backend_qt5agg import NavigationToolbar2QT as NavigationToolbar
+from matplotlib.backends.backend_qt5agg import FigureCanvasQTAgg as FigureCanvas
+import matplotlib.pyplot as plt
 
 class Window(object):
     def setupUi(self, MainWindow):
@@ -9,9 +11,17 @@ class Window(object):
         self.centralwidget.setObjectName("centralwidget")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.centralwidget)
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.graphicsView = QtWidgets.QGraphicsView(self.centralwidget)
-        self.graphicsView.setObjectName("graphicsView")
-        self.horizontalLayout.addWidget(self.graphicsView)
+
+        self.figure = plt.figure()
+        self.ax = plt.axes()
+
+        self.canvas = FigureCanvas(self.figure)
+        self.toolbar = NavigationToolbar(self.canvas, MainWindow)
+        self.figurelayout = QtWidgets.QVBoxLayout()
+        self.figurelayout.addWidget(self.toolbar)
+        self.figurelayout.addWidget(self.canvas)
+        self.horizontalLayout.addLayout(self.figurelayout)
+
         self.verticalLayout = QtWidgets.QVBoxLayout()
         self.verticalLayout.setObjectName("verticalLayout")
         self.focusSelect = QtWidgets.QComboBox(self.centralwidget)

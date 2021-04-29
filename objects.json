@@ -1,11 +1,30 @@
 {
+    "sun":{
+        "orbit":{
+            "eccentricity":0.01,
+            "semimajor":10,
+            "inclination":0.0,
+            "long":0.0,
+            "parent":"",
+            "period":10
+        },
+        "props":{
+            "designation":"sun",
+            "mass":1.9885e30,
+            "radius":696342,
+            "period":1.0,
+            "tilt":0.0,
+            "color":"yellow",
+            "f_scale":1.5e8
+        }
+    },
     "mercury":{
         "orbit":{
             "eccentricity":0.205630,
             "semimajor":57909050,
             "inclination":7.005,
             "long":48.331,
-            "parent":"",
+            "parent":"sun",
             "period":87.9691
         },
         "props":{
@@ -14,7 +33,8 @@
             "radius":2439.7,
             "period":58.696,
             "tilt":2.04,
-            "color":"gray"
+            "color":"gray",
+            "f_scale":1e4
         }
     },
     "venus":{
@@ -23,7 +43,7 @@
             "semimajor":108.208e6,
             "inclination":3.39458,
             "long":76.680,
-            "parent":"",
+            "parent":"sun",
             "period":224.701
         },
         "props":{
@@ -32,7 +52,8 @@
             "radius":6051.8,
             "period":243.025,
             "tilt":2.64,
-            "color":"peachpuff"
+            "color":"peachpuff",
+            "f_scale":1e5
         }
     },
     "earth":{
@@ -41,7 +62,7 @@
             "semimajor":149.6e6,
             "inclination":0.00005,
             "long":11.26064,
-            "parent":"",
+            "parent":"sun",
             "period":365.256363004
         },
         "props":{
@@ -50,7 +71,8 @@
             "radius":6371.0,
             "period":0.99726968,
             "tilt":23.439,
-            "color":"seagreen"
+            "color":"seagreen",
+            "f_scale":5e5
         }
     },
     "luna":{
@@ -68,8 +90,27 @@
             "radius":1734.4,
             "period":27.321661,
             "tilt":1.5424,
-            "color":"lightgrey"
+            "color":"lightgrey",
+            "f_scale":5e5
+        }
+    },
+    "mars":{
+        "orbit":{
+            "eccentricity":0.0934,
+            "semimajor":227.9e6,
+            "inclination":1.850,
+            "long":49.558,
+            "parent":"sun",
+            "period":687.0
+        },
+        "props":{
+            "designation":"planet",
+            "mass":6.4171e23,
+            "radius":3389.5,
+            "period":1.025957,
+            "tilt":25.19,
+            "color":"red",
+            "f_scale":1e4
         }
     }
-
 }

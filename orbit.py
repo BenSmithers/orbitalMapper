@@ -60,22 +60,37 @@ class Orbit:
         self._times = [ t for t in np.linspace(0, self._period*(1+1./n_points), 300)]
         self._points = [ self._get_pos(t) for t in self._times ]
         self._configured = True
+    
+    def approx_v(self, time):
+        """
+        returns in km/s
+        """
+        
+        p_dif = self.get_pos(time) - self.get_pos(time -Time(hour=1))
+        t_dif = 3600.
+
+        return p_dif/t_dif
 
     def get_pos(self, time):
-        time = float(time)/minutes_in_day
+        t = float(time)/minutes_in_day
 
-        while time>self._period:
-            time -= self._period
+        t = t % self._period
+
         if not self._configured:
             self._precalculate_orbit()
+    
+        gc = get_closest(t, self._times, self._points)
 
-        return get_closest(time, self._times, self._points)
+        if self._parent!="":
+            return self._planet_list[self._parent].get_pos(time) + gc
+        else:
+            return gc
 
     def _get_pos(self, time):
-        if not isinstance(time, (Time, int, float)):
+        if not isinstance(time, (int, float)):
             raise TypeError("Needed {}, got {}".format(Time, type(time)))
 
-        t = float(time)/minutes_in_day  # orbits are done in days, not minutesi
+        t = time  # time is already in minutes 
         while t>self._period:
             t -= self._period
 
@@ -105,9 +120,6 @@ class Orbit:
 
         #rotate about z-axis (opening in whichever direction)
         point = np.matmul(self._rot_long, point)
-       
-        if self._parent != "":
-            point += self._planet_list[self._parent].get_pos(time)
 
         return point #x,y,z
         
