@@ -15,7 +15,7 @@ from body import Bodies
 from projection import proj_angles
 
 from MultiHex.clock import Time
-from trajectory import calculate_traj
+from trajectory import calculate_traj, get_cost
 
 import time
 
@@ -79,17 +79,22 @@ class main_window(QMainWindow):
         v_earth = self._bodies["earth"].approx_v(self.time)
 
         a_vec = self._bodies["mercury"].get_pos(self.time)-p_earth
-        a_vec /= sqrt(np.dot(a_vec,a_vec))
+        a_vec *= (1e-2)/sqrt(np.dot(a_vec,a_vec))
 
-
-        times = np.linspace(0 , 50, 30)*24*60 #100 days now 
-
-        traj = calculate_traj(times, p_earth,v_earth, a_vec*0.001) 
+        times = np.linspace(0 , 50, 30)*24*60 # in minutes! 
+        traj = calculate_traj(times, p_earth,v_earth, a_vec) 
         end = time.time()
         print("Took {} seconds".format(end-start))
-
+        
         traj = np.transpose(traj)
         self.ui.ax.plot(traj[0], traj[1], color="white", ls='--')
+
+        close = get_cost(float(self.time), p_earth, v_earth, a_vec, times[5], -a_vec, times[-1], "mercury")
+        #print(close)       
+        #close = np.transpose(close)
+        self.ui.ax.plot(close[0][0], close[0][1], color="pink", marker='o')
+        traj = np.transpose(close[1])
+        self.ui.ax.plot(traj[0], traj[1], color='pink', ls='--')
 
 
 app = QApplication(sys.argv)
